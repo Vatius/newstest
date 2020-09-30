@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\News;
 use yii\web\Controller;
 
 class SiteController extends Controller
@@ -26,7 +27,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = News::find()->with('rubrics')->limit(20)->all();
+
+        return $this->render('index', [
+            'model' => $model
+        ]);
     }
 
 }
