@@ -48,6 +48,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'GET /news' => 'news/index',
+                'GET /news/category/<id>' => 'news/category',
                 'POST /news' => 'news/create',
                 'GET /news/<id>' => 'news/view',
                 'POST /news/<id>' => 'news/update',

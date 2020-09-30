@@ -38,6 +38,29 @@ class NewsController extends Controller {
     {
         $dataProvider = new ActiveDataProvider([
             'query' => News::find(),
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
+
+        $pagination = [
+            'totalCount' => $dataProvider->getTotalCount(),
+            'pageSize' => $dataProvider->pagination->pageSize,
+        ];
+
+        return [
+            '_pagination' => $pagination,
+            'news' => $dataProvider
+        ];
+    }
+
+    public function actionCategory($id)
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => News::find(),
+            'pagination' => [
+                'pageSize' => 5,
+            ]
         ]);
 
         $pagination = [

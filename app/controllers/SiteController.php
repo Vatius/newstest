@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\News;
+use app\models\Rubric;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 
 class SiteController extends Controller
@@ -27,10 +29,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = News::find()->with('rubrics')->limit(20)->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => News::find()->with('rubrics'),
+            'pagination' => [
+                'pageSize' => 5,
+            ]
+        ]);
+
+        $rubrics = Rubric::find()->roots()->all();
 
         return $this->render('index', [
-            'model' => $model
+            'dataProvider' => $dataProvider,
+            'rubrics' => $rubrics
         ]);
     }
 
