@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\data\ActiveDataProvider;
 use app\models\News;
@@ -39,27 +40,7 @@ class NewsController extends Controller {
         $dataProvider = new ActiveDataProvider([
             'query' => News::find(),
             'pagination' => [
-                'pageSize' => 5,
-            ]
-        ]);
-
-        $pagination = [
-            'totalCount' => $dataProvider->getTotalCount(),
-            'pageSize' => $dataProvider->pagination->pageSize,
-        ];
-
-        return [
-            '_pagination' => $pagination,
-            'news' => $dataProvider
-        ];
-    }
-
-    public function actionCategory($id)
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => News::find(),
-            'pagination' => [
-                'pageSize' => 5,
+                'pageSize' => 10,
             ]
         ]);
 
@@ -79,7 +60,7 @@ class NewsController extends Controller {
         $model = News::find()->with('rubrics')->where(['id' => $id])->one();
 
         if (is_null($model)) {
-            throw new \yii\web\NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         return $model;
@@ -126,7 +107,7 @@ class NewsController extends Controller {
         $model = News::findOne($id);
 
         if (is_null($model)) {
-            throw new \yii\web\NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $data = Yii::$app->getRequest()->getBodyParams();
@@ -153,7 +134,7 @@ class NewsController extends Controller {
         $model = News::findOne($id);
 
         if (is_null($model)) {
-            throw new \yii\web\NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $model->delete();
