@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  app:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./app
+    image: provider
+    container_name: newsapi-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./app:/var/www
+    networks:
+      - newsapi
+
+  database:
+    image: mysql:5.7.31
+    container_name: newsapi-db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: provider
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_USER: root
+    volumes:
+      - ./database:/var/lib/mysql
+    networks:
+      - newsapi
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=provider-db
+    networks:
+      - newsapi
+    depends_on:
+      - database
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: newsapi-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./app:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - newsapi
+
+networks:
+  newsapi:
+    driver: bridge
