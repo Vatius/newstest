@@ -15,6 +15,7 @@ class m200930_110105_create_rubric_table extends Migration
         $this->createTable('{{%rubric}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(255),
+            'tree' => $this->integer()->notNull(),
             'lft' => $this->integer()->notNull(),
             'rgt' => $this->integer()->notNull(),
             'depth' => $this->integer()->notNull(),

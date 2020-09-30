@@ -16,6 +16,9 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'q6Wloicq3oGHD_4K5ragyuNUd-_DVm7N',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -48,7 +51,16 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'GET /' => 'main/index',
+                'GET /news' => 'news/index',
+                'POST /news' => 'news/create',
+                'GET /news/<id>' => 'news/view',
+                'POST /news/<id>' => 'news/update',
+                'DELETE /news/<id>' => 'news/delete',
+                'GET /rubric' => 'rubric/index',
+                'POST /rubric' => 'rubric/create',
+                'GET /rubric/<id>' => 'rubric/view',
+                'POST /rubric/<id>' => 'rubric/update',
+                'DELETE /rubric/<id>' => 'rubric/delete',
             ],
         ],
     ],
@@ -68,7 +80,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['*'],
     ];
 }
 
